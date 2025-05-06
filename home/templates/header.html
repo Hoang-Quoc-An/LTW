@@ -1,0 +1,160 @@
+<!-- HEADER -->
+{% load static %}
+{% load humanize %}
+		<header>
+			<!-- TOP HEADER -->
+			<div id="top-header">
+				<div class="container">
+					<ul class="header-links pull-left">
+						<li><a href="#"><i class="fa fa-phone"></i>{{setting.phone}}</a></li>
+						<li><a href="#"><i class="fa fa-envelope-o"></i> {{ setting.email }}</a></li>
+						<li><a href="#"><i class="fa fa-map-marker"></i> {{setting.address}}</a></li>
+					</ul>
+					<ul class="header-links pull-right">
+						<li><a href="#"><i class="fa fa-dollar"></i> VND</a></li>
+
+<!--						<li><a href="#"><i class="fa fa-user-o"></i> Tài khoản</a></li>-->
+					</ul>
+
+				</div>
+			</div>
+			<!-- /TOP HEADER -->
+
+			<!-- MAIN HEADER -->
+			<div id="header">
+				<!-- container -->
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<!-- LOGO -->
+						<div class="col-md-3">
+							<div class="header-logo">
+								<a href="/" class="logo">
+									<img src="{% static '' %}img/logog.png" alt="">
+								</a>
+							</div>
+						</div>
+						<!-- /LOGO -->
+						<script>
+							$(function() {
+								$("#query").autocomplete({
+									source: "/search_auto/",
+									select: function (event, ui) { //item selected
+										AutoCompleteSelectHandler(event, ui)
+									},
+									minLength: 2,
+								});
+							});
+							function AutoCompleteSelectHandler(event, ui)
+							{
+								var selectedObj = ui.item;
+							}
+                		</script>
+
+
+						<!-- /SEARCH BAR -->
+
+
+						<div class="col-md-6">
+							<div class="header-search" style="display: flex; align-items: center;">
+								<form action="/search/" method="post" style="display: flex; align-items: center;">
+									{% csrf_token %}
+									<select name="catid" class="input-select">
+										<option value="0">Tất cả</option>
+										{% load mptt_tags %}
+										{% recursetree category %}
+											{% if node.is_leaf_node %}
+												<option value="{{node.id}}">{{node.title}}</option>
+											{% endif %}
+											{% if not node.is_leaf_node %}
+												<optgroup label="{{node.title}}">{{children}}</optgroup>
+											{% endif %}
+										{% endrecursetree %}
+									</select>
+									<input id="query" name="query" class="input" type="text" placeholder="Search here">
+									<button class="search-btn" style="vertical-align: middle; margin-left: 5px;">Tìm kiếm</button>
+								</form>
+							</div>
+						</div>
+						<!-- ACCOUNT -->
+						<div class="col-md-3 clearfix">
+							<div class="header-ctn">
+
+								<!-- /Wishlist -->
+								<div class="dropdown">
+
+
+								<li class="header-account dropdown default-dropdown">
+									{% if user.id is not None %}
+									<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+
+										<span class="text-uppercase" style="color: white;">{{ user.username }}<i class="fa fa-caret-down"></i></span>
+									</div>
+									{% else %}
+									<a href="/login" class="text-uppercase">Đăng nhập</a> / <a href="/signup" class="text-uppercase">Đăng ký</a>
+									{% endif %}
+									<ul class="custom-menu">
+										<li><a href="/user"><i class="fa fa-user-o"></i> Tài Khoản</a></li>
+										<li><a href="/user/orders"><i class="fa fa-exchange"></i> Đơn hàng</a></li>
+										<li><a href="/user/comments"><i class="fa fa-check"></i> Bình luận</a></li>
+										<li><a href="/logout"><i class="fa fa-unlock-alt"></i> Đăng xuất</a></li>
+
+									</ul>
+								</li>
+								</div>
+
+								<!-- Cart -->
+								<div class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+										<i class="fa fa-shopping-cart"></i>
+										<span>Giỏ hàng</span>
+										<div class="qty">{{totalqty}}</div>
+									</a>
+									<div class="cart-dropdown">
+										<div class="cart-list">
+											{% for rs in shopcart %}
+											<div class="product-widget">
+												<div class="product-img">
+													<img src="{{rs.product.image.url}}" alt=""  width="60" height="60">
+												</div>
+												<div class="product-body">
+													<h3 class="product-name"><a href="#">{{rs.product}}</a></h3>
+													<h4 class="product-price"><span class="qty">{{rs.quantity}}x</span> {{ rs.product.price |floatformat:3|intcomma}}</h4>
+												</div>
+												<button class="delete"><i class="fa fa-close"></i></button>
+											</div>
+
+
+											{% endfor %}
+										</div>
+										<div class="cart-summary">
+											<small>{{totalqty}} sản phẩm</small>
+											<h5>Tổng:{{ total |floatformat:3|intcomma}} VND</h5>
+										</div>
+										<div class="cart-btns">
+											<a href="/shopcart/">Xem giỏ hàng</a>
+											<a href="/order/orderproduct">Thanh toán <i class="fa fa-arrow-circle-right"></i></a>
+										</div>
+									</div>
+								</div>
+								<!-- /Cart -->
+
+								<!-- Menu Toogle -->
+								<div class="menu-toggle">
+									<a href="#">
+										<i class="fa fa-bars"></i>
+										<span>Menu</span>
+									</a>
+								</div>
+								<!-- /Menu Toogle -->
+							</div>
+						</div>
+						<!-- /ACCOUNT -->
+					</div>
+					<!-- row -->
+				</div>
+				<!-- container -->
+			</div>
+			<!-- /MAIN HEADER -->
+		</header>
+		<!-- /HEADER -->

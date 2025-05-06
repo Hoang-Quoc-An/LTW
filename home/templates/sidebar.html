@@ -1,0 +1,60 @@
+<!-- NAVIGATION -->
+{% load static %}
+		<nav id="navigation">
+			<!-- container -->
+			<div class="container">
+				<!-- responsive-nav -->
+				<div id="responsive-nav">
+					<!-- NAV -->
+					{% load mptt_tags %}
+					<ul class="main-nav nav navbar-nav">
+						<li class="active"><a href="">Trang chủ</a></li>
+
+
+						{% recursetree category %}
+						<li class="dropdown default-dropdown">
+							<a href="/category/{{ node.id }}/{{node.slug}}" class="dropdown-toggle"  aria-expanded="true" {% if not node.is_leaf_node %} data-toggle="dropdown" aria-expanded="true" {% endif %}>
+							{{ node.title }} <i class="fa fa-caret-down"></i></a>
+							<ul class="custom-menu">
+								{% if not node.is_leaf_node %}
+								<li><a href="">{{ children }}</a></li>
+								{% endif %}
+								<a class="banner banner-1" href="#">
+									<img src="{{ node.image.url }}" alt="">
+
+								</a>
+							</ul>
+						</li>
+						{% endrecursetree %}
+<!--						<li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Women <i class="fa fa-caret-down"></i></a>-->
+<!--							<ul class="custom-menu">-->
+<!--								<li>-->
+<!--									<h3 class="list-links-title">Categories</h3></li>-->
+<!--								<li><a href="#">Women’s Clothing</a></li>-->
+<!--								<li><a href="#">Men’s Clothing</a></li>-->
+<!--								<li><a href="#">Phones & Accessories</a></li>-->
+<!--								<li><a href="#">Jewelry & Watches</a></li>-->
+<!--								<li><a href="#">Bags & Shoes</a></li>-->
+
+
+<!--								<hr class="hidden-md hidden-lg">-->
+<!--										<hr>-->
+<!--										<a class="banner banner-1" href="#">-->
+<!--											<img src="{% static '' %}img/banner01.png" alt="">-->
+
+<!--										</a>-->
+
+<!--							</ul>-->
+<!--						</li>-->
+
+						<li><a href="/aboutus">Giới thiệu</a>
+						</li>
+						<li><a href="/contact">Liên hệ</a></li>
+					</ul>
+					<!-- /NAV -->
+				</div>
+				<!-- /responsive-nav -->
+			</div>
+			<!-- /container -->
+		</nav>
+		<!-- /NAVIGATION -->

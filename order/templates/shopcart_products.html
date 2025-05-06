@@ -1,0 +1,130 @@
+{% extends 'homebase.html' %}
+
+{% block title %} Giỏ hàng {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+{% load humanize %}
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+{% block body %}
+{% load static %}
+	<!-- BREADCRUMB -->
+<!--	<div id="breadcrumb">-->
+<!--		<div class="container">-->
+<!--			<ul class="breadcrumb">-->
+<!--                <li><a href="/home/">Trang Chủ</a></li>-->
+<!--                <li class="active">Giỏ hàng</li>-->
+<!--			</ul>-->
+<!--		</div>-->
+<!--	</div>-->
+
+    <div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="breadcrumb-header">Giỏ hàng</h3>
+						<ul class="breadcrumb-tree">
+							<li><a href="/">Trang chủ</a></li>
+							<li class="active">Giỏ hàng</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-12">
+                    <div class="order-summary clearfix">
+
+                        <table class="shopping-cart-table table">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sản Phẩm</th>
+                                <th class="text-center">Giá</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Tổng</th>
+                                <th class="text-right"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for rs in shopcart %}
+                                <tr>
+                                    <td class="thumb">
+
+                                            <img src="{{rs.product.image.url}}" alt=""  width="100" height="100">
+
+                                    </td>
+                                    <td class="details">
+                                        <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{rs.product}} </a>  </td>
+                                    <td class="price text-center"><strong>
+
+                                            {{ rs.product.price |floatformat:3|intcomma}}
+
+                                    </strong></td>
+                                    <td class="qty text-center">
+
+                                        <strong>{{rs.quantity}}</strong>
+
+                                    </td>
+                                    <td class="total text-center"><strong class="primary-color">
+
+                                            {{ rs.amount |floatformat:3|intcomma}}
+
+                                    </strong></td>
+                                    <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th class="empty" colspan="3"></th>
+                                <th>TỔNG TIỀN</th>
+                                <th colspan="2" class="sub-total">{{ total |floatformat:3|intcomma}} VND</th>
+                            </tr>
+                            <tr>
+                                <th class="empty" colspan="3"></th>
+                                <th>PHÍ SHIP</th>
+                                <td colspan="2">Free Shipping</td>
+                            </tr>
+                            <tr>
+                                <th class="empty" colspan="3"></th>
+                                <th>ĐƠN GIÁ</th>
+                                <th colspan="2" class="total">{{ total |floatformat:3|intcomma}} VND</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="pull-right">
+                            <a href="/order/orderproduct" class="primary-btn">Đặt hàng</a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+
+	<!-- /section -->
+
+
+
+
+{% endblock %}

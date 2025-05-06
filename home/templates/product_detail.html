@@ -1,0 +1,362 @@
+{% extends 'homebase.html' %}
+{% load static %}
+
+{% load humanize %}
+{% block title %} {{product.title}} {{ setting.title }} {% endblock %}
+{% block description %} {{ product.description }} {% endblock %}
+{% block keywords %} {{ product.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+{% block body %}
+
+
+
+		<!-- /NAVIGATION -->
+
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<ul class="breadcrumb-tree">
+							<li><a href="/">Trang chủ</a></li>
+							<li><a href="/category/{{product.category.id}}/{{product.category.slug}}">{{product.category.title}} </a></li>
+							<li class="active">{{product.title}} </li>
+
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- Product main img -->
+					<div class="col-md-5 col-md-push-2">
+						<div id="product-main-img">
+<!--							<div class="product-preview">-->
+<!--								<img src="./img/product01.png" alt="">-->
+<!--							</div>-->
+
+
+<!--							<div class="product-preview">-->
+<!--                                    <img src="{{ product.image.url }}" alt="" style="height: 500px">-->
+<!--							</div>-->
+							<div class="product-preview">
+								<img src="{{product.image.url}}" alt="" >
+							</div>
+
+							{% for rs in images %}
+							<div class="product-preview">
+								<img src="{{rs.image.url}}" alt="" >
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<!-- /Product main img -->
+
+					<!-- Product thumb imgs -->
+					<div class="col-md-2  col-md-pull-5">
+						<div id="product-imgs">
+
+							<div class="product-preview">
+								<img src="{{product.image.url}}" alt="" >
+							</div>
+
+							{% for rs in images %}
+							<div class="product-preview">
+								<img src="{{rs.image.url}}" alt="" >
+							</div>
+							{% endfor %}
+
+						</div>
+					</div>
+					<!-- /Product thumb imgs -->
+
+					<!-- Product details -->
+					<div class="col-md-5">
+						<div class="product-details">
+							<h2 class="product-name">{{product.title}}</h2>
+							<div>
+							<div class="product-rating">
+								<i class="fa fa-star{% if rs.avaregereview < 1%}-o empty{% endif%}" style="color:#DC143C"></i>
+								<i class="fa fa-star{% if rs.avaregereview < 2%}-o empty{% endif%}" style="color:#DC143C"></i>
+								<i class="fa fa-star{% if rs.avaregereview < 3%}-o empty{% endif%}" style="color:#DC143C"></i>
+								<i class="fa fa-star{% if rs.avaregereview < 4%}-o empty{% endif%}" style="color:#DC143C"></i>
+								<i class="fa fa-star{% if rs.avaregereview < 5%}-o empty{% endif%}" style="color:#DC143C"></i>
+								<a class="review-link" href="#"> {{ product.countreview}}  Đánh giá / Thêm Đánh Giá</a>
+
+                            </div>
+							</div>
+
+
+
+
+							<div>
+<!--								<h3 class="product-price">{{product.price|floatformat:3}} VND </h3>-->
+								<h3 class="product-price">{{ product.price|floatformat:3|intcomma }} VND </h3>
+<!--								<span class="product-available"> Còn Hàng</span>-->
+							</div>
+							<p>{{product.description|safe}}</p>
+
+
+
+<!--							<div class="add-to-cart">-->
+<!--								<div class="qty-label">-->
+<!--									Số lượng-->
+<!--									<div class="input-number">-->
+<!--										<input type="number">-->
+<!--										<span class="qty-up">+</span>-->
+<!--										<span class="qty-down">-</span>-->
+<!--									</div>-->
+<!--								</div>-->
+
+<!--								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>-->
+<!--							</div>-->
+
+							<form action="/order/addtoshopcart/{{ product.id }}" method="post"  id="addchart-form">
+                                    {% csrf_token %}
+                                    <div id="SelectedProduct" class="add-to-cart">
+                                        <p><strong>Tình Trạng:</strong> {% if product.amount > 0  %} Còn Hàng {% else %} Hết Hàng {% endif %}</p>
+
+                                        <div class="qty-input">
+                                            <span class="text-uppercase">Số lượng: </span>
+                                            <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.amount }}">
+                                            <button class="add-to-cart-btn" type="submit" {% if product.amount < 1  %} disabled {% endif %} class="primary-btn add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+
+							<ul class="product-links">
+								<li>Loại:</li>
+								<li><a href="#">{{ product.category}}</a></li>
+
+							</ul>
+
+
+
+						</div>
+					</div>
+					<!-- /Product details -->
+
+					<!-- Product tab -->
+					<div class="col-md-12">
+						<div id="product-tab">
+							<!-- product tab nav -->
+							<ul class="tab-nav">
+								<li class="active"><a data-toggle="tab" href="#tab1">Chi tiết</a></li>
+								<li><a data-toggle="tab" href="#tab2">Mô tả</a></li>
+								<li><a data-toggle="tab" href="#tab3">Đánh giá ({{ product.countreview}} )</a></li>
+							</ul>
+							<!-- /product tab nav -->
+
+							<!-- product tab content -->
+							<div class="tab-content">
+								<!-- tab1  -->
+								<div id="tab1" class="tab-pane fade in active">
+									<div class="row">
+										<div class="col-md-12">
+											<p>  {{product.detail|safe}}</p>
+										</div>
+									</div>
+								</div>
+								<!-- /tab1  -->
+
+								<!-- tab2  -->
+								<div id="tab2" class="tab-pane fade in">
+									<div class="row">
+										<div class="col-md-12">
+											<p>{{product.description|safe}}</p>
+										</div>
+									</div>
+								</div>
+								<!-- /tab2  -->
+
+								<!-- tab3  -->
+								<div id="tab3" class="tab-pane fade in">
+									<div class="row">
+										<!-- Rating -->
+										<div class="col-md-3">
+											<div id="rating">
+												<div class="rating-avg">
+													<span>{{ rs.avaregereview}}</span>
+													<div class="rating-stars">
+														<i class="fa fa-star{% if rs.avaregereview < 1%}-o empty{% endif%}" style="color:#DC143C"></i>
+														<i class="fa fa-star{% if rs.avaregereview < 2%}-o empty{% endif%}" style="color:#DC143C"></i>
+														<i class="fa fa-star{% if rs.avaregereview < 3%}-o empty{% endif%}" style="color:#DC143C"></i>
+														<i class="fa fa-star{% if rs.avaregereview < 4%}-o empty{% endif%}" style="color:#DC143C"></i>
+														<i class="fa fa-star{% if rs.avaregereview < 5%}-o empty{% endif%}" style="color:#DC143C"></i>
+
+													</div>
+												</div>
+
+											</div>
+										</div>
+										<!-- /Rating -->
+
+										<!-- Reviews -->
+										<div class="col-md-6">
+
+											<div id="reviews">
+												{% for rs in comments%}
+												<ul class="reviews">
+													<li>
+														<div class="review-heading">
+															<h5 class="name"> {{ rs.user.first_name }}</h5>
+															<p class="date">{{ rs.create_at}}</p>
+															<div class="review-rating ">
+															<i class="fa fa-star{% if rs.rate < 1 %}-o empty{% endif %}" ></i>
+                                                        	<i class="fa fa-star{% if rs.rate < 2 %}-o empty{% endif %}" ></i>
+                                                        	<i class="fa fa-star{% if rs.rate < 3 %}-o empty{% endif %}" ></i>
+                                                        	<i class="fa fa-star{% if rs.rate < 4 %}-o empty{% endif %}" ></i>
+                                                        	<i class="fa fa-star{% if rs.rate < 5 %}-o empty{% endif %}" ></i>
+															</div>
+
+														</div>
+														<div class="review-body">
+															<p>{{ rs.comment }}</p>
+														</div>
+													</li>
+
+												</ul>
+												{% endfor %}
+												<ul class="reviews-pagination">
+													<li class="active">1</li>
+													<li><a href="#">2</a></li>
+													<li><a href="#">3</a></li>
+													<li><a href="#">4</a></li>
+													<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+												</ul>
+											</div>
+
+										</div>
+										<!-- /Reviews -->
+
+										<!-- Review Form -->
+										<div class="col-md-3">
+											{% if messages %}
+                                			{% for message in messages %}
+                                    			<div class="alert alert-{{message.tags}}" role="alert">
+                                        		{{ message }}
+                                    			</div>
+                                			{% endfor %}
+                            				{% endif %}
+											<div id="review-form">
+												<form class="review-form" action="/product/addcomment/{{product.id}}" method="post">
+													{% csrf_token %}
+<!--													<input class="input" type="text" placeholder="Your Name">-->
+<!--													<input class="input" type="comment" placeholder="Your Email">-->
+													<div class="form-group">
+														<textarea class="input" name="comment"   placeholder="Your Review"></textarea>
+													</div>
+
+													<div class="form-group">
+													<div class="input-rating">
+														<span>Your Rating: </span>
+														<div class="stars">
+															<input type="radio" id="star5" name="rate" value="5"  /><label for="star5"></label>
+															<input type="radio" id="star4" name="rate" value="4" /><label for="star4"></label>
+															<input type="radio" id="star3" name="rate" value="3" /><label for="star3"></label>
+															<input type="radio" id="star2" name="rate" value="2" /><label for="star2"></label>
+															<input type="radio" id="star1" name="rate" value="1" /><label for="star1"></label>
+														</div>
+
+													</div>
+													</div>
+													{% if user.id is not None %}
+													<button class="primary-btn">Gửi Đánh Giá</button>
+													{% else %}
+														Ban can dang nhap de danh gia sp
+													{% endif %}
+
+												</form>
+											</div>
+										</div>
+										<!-- /Review Form -->
+									</div>
+								</div>
+								<!-- /tab3  -->
+							</div>
+							<!-- /product tab content  -->
+						</div>
+					</div>
+					<!-- /product tab -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+
+		<!-- Section -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h3 class="title">Sản Phẩm Khác</h3>
+						</div>
+					</div>
+
+					<!-- product -->
+					{% for rs in products_picked %}
+
+					<div class="col-md-3 col-xs-6">
+						<div class="product">
+							<div class="product-img">
+								<a href="/product/{{ rs.id }}/{{rs.slug}}" ></a>
+								<img src="{{ rs.image.url }}" alt="">
+
+							</div>
+							<div class="product-body">
+								<p class="product-category">{{ rs.category }}</p>
+								<h3 class="product-name"><a href="/product/{{ rs.id }}/{{rs.slug}}">{{ rs.title }}</a></h3>
+								<h4 class="product-price">{{ rs.price }} VND  </h4>
+								<div class="product-rating">
+								</div>
+
+							</div>
+							<div class="add-to-cart">
+
+								<button href="/order/addtoshopcart/{{rs.id}}" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					<!-- /product -->
+
+
+					<!-- /product -->
+
+					<div class="clearfix visible-sm visible-xs"></div>
+
+
+
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /Section -->
+
+		<!-- NEWSLETTER -->
+
+		<!-- /NEWSLETTER -->
+
+{% endblock %}

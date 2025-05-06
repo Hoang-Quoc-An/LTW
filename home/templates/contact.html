@@ -1,0 +1,77 @@
+
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description}} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block body %}
+<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+
+						<ul class="breadcrumb-tree">
+							<li><a href="/">Trang chủ</a></li>
+							<li class="active">Liên hệ</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+
+					<div class="col-md-4">
+						<!-- Billing Details -->
+						<div class="billing-details">
+
+							<div class="section-title">
+								<h3 class="title">Thông tin liên hệ</h3>
+								{% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{message.tags}}" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+							</div>
+							<form method="post">
+								{% csrf_token %}
+								{{ form.as_p }}
+								<input type="submit" value="Gửi tin nhắn">
+							</form>
+
+
+
+
+						</div>
+					</div>
+
+					<!-- Order Details -->
+					<div class="col-md-8">
+						<div class="section-title text-center">
+							<h3 class="title">Liên hệ</h3>
+						</div>
+                        <div>{{setting.contact|safe}}</div>
+						<a href="#" class="primary-btn order-submit">Place order</a>
+					</div>
+					<!-- /Order Details -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+{% endblock %}

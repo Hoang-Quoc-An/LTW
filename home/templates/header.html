@@ -91,7 +91,7 @@
 										<span class="text-uppercase" style="color: white;">{{ user.username }}<i class="fa fa-caret-down"></i></span>
 									</div>
 									{% else %}
-									<a href="/login" class="text-uppercase">Đăng nhập</a> / <a href="/signup" class="text-uppercase">Đăng ký</a>
+									<a href="/login" class="text-uppercase">Đăng nhập</a> / <a href="{% url 'signup_form' %}" class="text-uppercase">Đăng ký</a>
 									{% endif %}
 									<ul class="custom-menu">
 										<li><a href="/user"><i class="fa fa-user-o"></i> Tài Khoản</a></li>

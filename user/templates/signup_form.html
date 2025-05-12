@@ -39,21 +39,24 @@
                             {% endfor %}
                         {% endif %}
 
-                       	<form method="post">
+                       	<form method="post" class="clearfix">
                             {% csrf_token %}
                             {% for field in form %}
-                                <p>
+                                <div class="form-group">
                                     {{ field.label_tag }}<br>
+                                    {{ field.errors }}
                                     {{ field }}
                                     {% if field.help_text %}
-                                        <small style="color: grey">{{ field.help_text }}</small>
+                                        <small style="color: rgb(165, 9, 9)">{{ field.help_text }}</small>
                                     {% endif %}
-                                    {% for error in field.errors %}
-                                        <p style="color: red">{{ error }}</p>
-                                    {% endfor %}
-                                </p>
+                                </div>
                             {% endfor %}
-                            <button type="submit">Đăng Ký</button>
+                            <div class="form-group text-center">
+                                <button type="submit" class="primary-btn" style="padding: 10px 30px; border-radius: 5px; transition: all 0.3s ease; background-color: #FF34B3; border: none; color: white; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">Đăng Ký</button>
+                            </div>
+                            <div class="text-center" style="margin-top: 20px;">
+                                <p>Bạn đã có tài khoản? <a href="/login/" style="color: #FF34B3; font-weight: bold; text-decoration: none;">Đăng nhập ngay</a></p>
+                            </div>
                         </form>
 
                     </div>

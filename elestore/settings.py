@@ -98,6 +98,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+
+# VNPay Configuration
+VNPAY_TMN_CODE = 'DEMO'
+VNPAY_HASH_SECRET_KEY = 'UVGKZNFQFYQMQXNGVNKWKPRJZKPGQTVI'
+VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
+VNPAY_RETURN_URL = 'http://localhost:8000/order/payment_return/'
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',

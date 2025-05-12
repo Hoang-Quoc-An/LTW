@@ -121,5 +121,5 @@ STATIC_URL = '/static/'
 VNPAY_RETURN_URL = 'http://localhost:8000/payment_return'  # get from config
 VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
 VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction'
-VNPAY_TMN_CODE = ''  # Website ID in VNPAY System, get from config
-VNPAY_HASH_SECRET_KEY = ''  # Secret key for create checksum,get from config
+VNPAY_TMN_CODE = 'YOUR_TMN_CODE_HERE'  # Website ID in VNPAY System, replace with your real code
+VNPAY_HASH_SECRET_KEY = 'YOUR_SECRET_KEY_HERE'  # Secret key for create checksum, replace with your real key

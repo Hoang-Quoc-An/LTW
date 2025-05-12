@@ -64,32 +64,14 @@
                             </div>
                             <p><label for="id_first_name">Tổng:  VND </label>
                                 <input type="text" name="total" class="input" readonly value="{{ total }} VND"></p>
-                            
-                            <div class="section-title">
-                                <h4 class="title">Phương thức thanh toán</h4>
-                            </div>
-                            <div class="payment-method">
-                                <div class="input-radio">
-                                    <input type="radio" name="payment_method" id="payment-1" value="cod" checked>
-                                    <label for="payment-1">
-                                        <span></span>
-                                        Thanh toán khi nhận hàng (COD)
-                                    </label>
-                                    <div class="caption">
-                                        <p>Bạn sẽ thanh toán khi nhận được hàng.</p>
-                                    </div>
-                                </div>
-                                <div class="input-radio">
-                                    <input type="radio" name="payment_method" id="payment-2" value="vnpay">
-                                    <label for="payment-2">
-                                        <span></span>
-                                        Thanh toán qua VNPay
-                                    </label>
-                                    <div class="caption">
-                                        <p>Bạn sẽ được chuyển đến cổng thanh toán VNPay để hoàn tất giao dịch.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <p><label for="id_first_name">Credit Card </label>
+                                <input type="text" name="holder" class="input"  value=""></p>
+                            <p><label for="id_first_name">Credit Card Number</label>
+                                <input type="text" name="number" class="input"  value=""></p>
+                            <p><label for="id_first_name">Credit  Date/Year</label>
+                                <input type="text" name="ecpdate" class="input"  placeholder="mm/yy"></p>
+                            <p><label for="id_first_name">Mã BH</label>
+                                <input type="text" name="secnumber" class="input"  value=""></p>
                         </div>
                 </div>
             </Form>

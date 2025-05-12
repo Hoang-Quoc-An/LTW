@@ -40,14 +40,18 @@ def login_form(request):
                 request.session['userimage'] = userprofile.image.url
                 return HttpResponseRedirect('/')
             except UserProfile.DoesNotExist:
-                # Tạo profile cho tất cả các loại tài khoản nếu chưa có
-                userprofile = UserProfile()
-                userprofile.user = user
-                userprofile.image = "images/users/user.png"
-                userprofile.save()
-                login(request, user)
-                request.session['userimage'] = userprofile.image.url
-                return HttpResponseRedirect('/')
+                # Tạo profile cho admin nếu chưa có
+                if user.is_superuser:
+                    userprofile = UserProfile()
+                    userprofile.user = user
+                    userprofile.image = "images/users/user.png"
+                    userprofile.save()
+                    login(request, user)
+                    request.session['userimage'] = userprofile.image.url
+                    return HttpResponseRedirect('/')
+                else:
+                    messages.warning(request,"Lỗi đăng nhập! Tài khoản không hợp lệ")
+                    return HttpResponseRedirect('/login')
         else:
             messages.warning(request,"Lỗi đăng nhập! Sai tên đăng nhập hoặc mật khẩu")
             return HttpResponseRedirect('/login')
@@ -64,13 +68,15 @@ def signup_form(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
+            login(request, user)
             #Create data in profile table for user
+            current_user = request.user
             data=UserProfile()
-            data.user_id=user.id
+            data.user_id=current_user.id
             data.image="images/users/user.png"
             data.save()
-            messages.success(request, 'Tài khoản của bạn đã tạo thành công! Vui lòng đăng nhập.')
-            return HttpResponseRedirect('/login')
+            messages.success(request, 'Tài khoản của bạn đã tạo thành công!')
+            return HttpResponseRedirect('/')
         else:
             messages.warning(request,form.errors)
             return HttpResponseRedirect('/signup')

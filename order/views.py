@@ -1,17 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render
 import json
 # Create your views here.
 from django.utils.crypto import get_random_string
-from datetime import datetime
-from django.conf import settings
 
 from order.models import ShopCart, ShopCartForm, OrderForm, Order, OrderProduct
 from product.models import Category, Product
 from user.models import UserProfile
-from order.vnpay import VnPay
 
 
 def index(request):
@@ -101,7 +98,9 @@ def orderproduct(request):
         form = OrderForm(request.POST)
         # return HttpResponse(request.POST.items())
         if form.is_valid():
-            # Tạo đơn hàng
+            # Send Credit card to bank,  If the bank responds ok, continue, if not, show the error
+            # ..............
+
             data = Order()
             data.first_name = form.cleaned_data['first_name']  # get product quantity from form
             data.last_name = form.cleaned_data['last_name']
@@ -115,7 +114,6 @@ def orderproduct(request):
             data.code = ordercode
             data.save()  #
 
-            # Lưu thông tin sản phẩm trong đơn hàng
             for rs in shopcart:
                 detail = OrderProduct()
                 detail.order_id = data.id  # Order Id
@@ -134,18 +132,10 @@ def orderproduct(request):
 
                 # ************ <> *****************
 
-            # Kiểm tra nếu có yêu cầu thanh toán qua VNPay
-            payment_method = request.POST.get('payment_method', '')
-            if payment_method == 'vnpay':
-                # Lưu order_id vào session để sử dụng sau khi thanh toán
-                request.session['order_id'] = data.id
-                return redirect('payment_vnpay')
-            else:
-                # Thanh toán thông thường
-                ShopCart.objects.filter(user_id=current_user.id).delete()  # Clear & Delete shopcart
-                request.session['cart_items'] = 0
-                messages.success(request, "Đơn hàng của bạn đã đặt thành công. Xin cảm ơn đã ủng hộ ! ")
-                return render(request, 'Order_Completed.html', {'ordercode': ordercode, 'category': category})
+            ShopCart.objects.filter(user_id=current_user.id).delete()  # Clear & Delete shopcart
+            request.session['cart_items'] = 0
+            messages.success(request, "Đơn hàng của bạn đã đặt thành công. Xin cảm ơn đã ủng hộ ! ")
+            return render(request, 'Order_Completed.html', {'ordercode': ordercode, 'category': category})
         else:
             messages.warning(request, form.errors)
             return HttpResponseRedirect("/order/orderproduct")
